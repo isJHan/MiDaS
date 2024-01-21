@@ -108,3 +108,15 @@ venv.bak/
 *.jpg
 *.jpeg
 *.pt
+
+# log
+log/
+
+#vscode 
+.vscode/*
+
+# output point cloud
+point_clouds/*
+
+# tmp file
+*.npy

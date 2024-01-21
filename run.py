@@ -35,7 +35,7 @@ def process(device, model, model_type, image, input_size, target_size, optimize,
 
     if "openvino" in model_type:
         if first_execution or not use_camera:
-            print(f"    Input resized to {input_size[0]}x{input_size[1]} before entering the encoder")
+            # print(f"    Input resized to {input_size[0]}x{input_size[1]} before entering the encoder")
             first_execution = False
 
         sample = [np.reshape(image, (1, 3, *input_size))]
@@ -55,7 +55,7 @@ def process(device, model, model_type, image, input_size, target_size, optimize,
 
         if first_execution or not use_camera:
             height, width = sample.shape[2:]
-            print(f"    Input resized to {width}x{height} before entering the encoder")
+            # print(f"    Input resized to {width}x{height} before entering the encoder")
             first_execution = False
 
         prediction = model.forward(sample)
@@ -127,7 +127,8 @@ def run(input_path, output_path, model_path, model_type="dpt_beit_large_512", op
 
     # get input
     if input_path is not None:
-        image_names = glob.glob(os.path.join(input_path, "*"))
+        image_names = glob.glob(os.path.join(input_path, "*.jpg"))
+        # image_names = glob.glob(os.path.join(input_path, "Frame*.png"))
         num_images = len(image_names)
     else:
         print("No input path specified. Grabbing images from camera.")
@@ -147,7 +148,7 @@ def run(input_path, output_path, model_path, model_type="dpt_beit_large_512", op
 
             # input
             original_image_rgb = utils.read_image(image_name)  # in [0, 1]
-            image = transform({"image": original_image_rgb})["image"]
+            image = transform({"image": original_image_rgb})["image"] # jh in [-1, 1]
 
             # compute
             with torch.no_grad():
